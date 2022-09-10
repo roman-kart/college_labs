@@ -17,5 +17,6 @@ namespace FoodStoreApp.Models
         [Range(1, int.MaxValue, ErrorMessage = "Значение должно быть больше нуля")]
         public int Rating { get; set; }
         public string? OtherJsonData { get; set; }
+        public virtual List<Product>? Products { get; set; }
     }
 }

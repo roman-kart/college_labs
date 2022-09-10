@@ -8,5 +8,6 @@ namespace FoodStoreApp.Data
         DbContextOptions< ApplicationDbContext> options) : base(options){}
         public DbSet<Category> Category { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

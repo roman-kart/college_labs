@@ -4,6 +4,7 @@ using FoodStoreApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodStoreApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220910201356_AddProductTableToDatabase")]
+    partial class AddProductTableToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,7 +81,7 @@ namespace FoodStoreApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -87,9 +89,6 @@ namespace FoodStoreApp.Migrations
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ManufacturerId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -102,36 +101,18 @@ namespace FoodStoreApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ManufacturerId");
-
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("FoodStoreApp.Models.Product", b =>
                 {
                     b.HasOne("FoodStoreApp.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("FoodStoreApp.Models.Manufacturer", "Manufacturer")
-                        .WithMany("Products")
-                        .HasForeignKey("ManufacturerId")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Manufacturer");
-                });
-
-            modelBuilder.Entity("FoodStoreApp.Models.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("FoodStoreApp.Models.Manufacturer", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
