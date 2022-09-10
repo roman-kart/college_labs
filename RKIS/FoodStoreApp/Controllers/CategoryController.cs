@@ -32,22 +32,63 @@ namespace FoodStoreApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category cat)
         {
+            if (ModelState.IsValid)
+            {
+                _db.Category.Add(cat);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(cat);
 
-            _db.Category.Add(cat);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
 
         //GET - EDIT
         public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var cat = _db.Category.Find(id);
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+            return View(cat);
         }
+
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Category cat)
+        {
+            Console.WriteLine($"Is model valid: {ModelState.IsValid}");
+            if (ModelState.IsValid)
+            {
+                _db.Category.Update(cat);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(cat);
+
+        }
+
         //GET - DELETE
         public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var cat = _db.Category.Find(id);
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+            return View(cat);
         }
 
         //POST - DELETE
@@ -66,5 +107,6 @@ namespace FoodStoreApp.Controllers
 
 
         }
+
     }
 }
