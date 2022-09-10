@@ -30,24 +30,65 @@ namespace FoodStoreApp.Controllers
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Manufacturer cat)
+        public IActionResult Create(Manufacturer manuf)
         {
+            if (ModelState.IsValid)
+            {
+                _db.Manufacturers.Add(manuf);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(manuf);
 
-            _db.Manufacturers.Add(cat);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
 
         //GET - EDIT
         public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var manuf = _db.Manufacturers.Find(id);
+            if (manuf == null)
+            {
+                return NotFound();
+            }
+
+            return View(manuf);
         }
+
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Manufacturer manuf)
+        {
+            Console.WriteLine($"Is model valid: {ModelState.IsValid}");
+            if (ModelState.IsValid)
+            {
+                _db.Manufacturers.Update(manuf);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(manuf);
+
+        }
+
         //GET - DELETE
         public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var manuf = _db.Manufacturers.Find(id);
+            if (manuf == null)
+            {
+                return NotFound();
+            }
+
+            return View(manuf);
         }
 
         //POST - DELETE
@@ -55,12 +96,12 @@ namespace FoodStoreApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var cat = _db.Manufacturers.Find(id);
-            if (cat == null)
+            var manuf = _db.Manufacturers.Find(id);
+            if (manuf == null)
             {
                 return NotFound();
             }
-            _db.Manufacturers.Remove(cat);
+            _db.Manufacturers.Remove(manuf);
             _db.SaveChanges();
             return RedirectToAction("Index");
 
