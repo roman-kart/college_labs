@@ -3,20 +3,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FoodStoreApp.Models
 {
-    public class Manufacturer
+    public class UserFile
     {
         [Key]
-        public int ManufacturerId { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "Поле не может быть пустым")]
         [DisplayName("Название")]
         public string Title { get; set; }
-        [DisplayName("Описание")]
-        public string? Description { get; set; }
-        [DisplayName("Рейтинг")]
         [Required(ErrorMessage = "Поле не может быть пустым")]
-        [Range(1, int.MaxValue, ErrorMessage = "Значение должно быть больше нуля")]
-        public int Rating { get; set; }
+        [DisplayName("Содержимое")]
+        public byte[] Content { get; set; }
+        [Required(ErrorMessage = "Поле не может быть пустым")]
+        [DisplayName("Тип")]
+        public string Type { get; set; }
         public string? OtherJsonData { get; set; }
-        public List<Product>? Products { get; set; }
+        public int? ProductId { get; set; }
+        public Product? Product { get; set; }
     }
 }

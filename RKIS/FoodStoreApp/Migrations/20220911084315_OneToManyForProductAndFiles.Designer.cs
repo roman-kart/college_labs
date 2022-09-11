@@ -4,6 +4,7 @@ using FoodStoreApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodStoreApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220911084315_OneToManyForProductAndFiles")]
+    partial class OneToManyForProductAndFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +26,11 @@ namespace FoodStoreApp.Migrations
 
             modelBuilder.Entity("FoodStoreApp.Models.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -40,18 +42,18 @@ namespace FoodStoreApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Category");
                 });
 
             modelBuilder.Entity("FoodStoreApp.Models.Manufacturer", b =>
                 {
-                    b.Property<int>("ManufacturerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManufacturerId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -66,18 +68,18 @@ namespace FoodStoreApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ManufacturerId");
+                    b.HasKey("Id");
 
                     b.ToTable("Manufacturers");
                 });
 
             modelBuilder.Entity("FoodStoreApp.Models.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -95,7 +97,7 @@ namespace FoodStoreApp.Migrations
                     b.Property<double?>("Price")
                         .HasColumnType("float");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
@@ -119,7 +121,10 @@ namespace FoodStoreApp.Migrations
                     b.Property<string>("OtherJsonData")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductsId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -132,7 +137,7 @@ namespace FoodStoreApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("UserFiles");
                 });
@@ -156,11 +161,11 @@ namespace FoodStoreApp.Migrations
 
             modelBuilder.Entity("FoodStoreApp.Models.UserFile", b =>
                 {
-                    b.HasOne("FoodStoreApp.Models.Product", "Product")
-                        .WithMany("UserFiles")
-                        .HasForeignKey("ProductId");
+                    b.HasOne("FoodStoreApp.Models.Product", "Products")
+                        .WithMany("UserFile")
+                        .HasForeignKey("ProductsId");
 
-                    b.Navigation("Product");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("FoodStoreApp.Models.Category", b =>
@@ -175,7 +180,7 @@ namespace FoodStoreApp.Migrations
 
             modelBuilder.Entity("FoodStoreApp.Models.Product", b =>
                 {
-                    b.Navigation("UserFiles");
+                    b.Navigation("UserFile");
                 });
 #pragma warning restore 612, 618
         }

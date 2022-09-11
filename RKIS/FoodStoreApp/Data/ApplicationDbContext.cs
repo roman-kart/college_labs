@@ -9,5 +9,6 @@ namespace FoodStoreApp.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<UserFile> UserFiles { get; set; }
     }
 }
